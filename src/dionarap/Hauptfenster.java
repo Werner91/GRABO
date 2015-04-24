@@ -1,6 +1,7 @@
 package dionarap;
 
 import java.awt.BorderLayout;
+
 import javax.swing.*;
 
 import de.fhwgt.dionarap.model.data.DionaRapModel;
@@ -30,6 +31,8 @@ public class Hauptfenster extends JFrame {
 	private int gegner = 4;
 	private int hindernisse = 4;
 	private AbstractPawn[] pawns;
+	private Navigator navigator;
+	
 	
 	
 	public static void main(String args[]){
@@ -53,13 +56,15 @@ public class Hauptfenster extends JFrame {
 	
 
 		this.setLocationRelativeTo(null); //Ort des Fensters auf dem Bildschirm festlegen
-		new Navigator(this);//Navigator erzeugen
+		this.navigator = new Navigator(this);//Navigator erzeugen
+		this.addComponentListener(new ListenerFenster(navigator));
+		this.addKeyListener(new ListenerKeyEvent()); //Listener für bewegung mit der Tastatur
 		this.setVisible(true); //Fenster sichtbar machen
 		this.requestFocus();	
 	}
 
 	
-	void init_dionarap(){
+	public void init_dionarap(){
 		
 		//Spielelogik DionaRapModel initialisieren
 		DionaRap_Model = new DionaRapModel(y,x,gegner,hindernisse);
@@ -67,11 +72,27 @@ public class Hauptfenster extends JFrame {
 		DionaRap_Controller = new DionaRapController(DionaRap_Model);
 		
 		spielfeld = new Spielfeld(); //Spielfeld erzeugen
+		
+		/* Listener fuer das Model registrieren */
+		DionaRap_Model.addModelChangedEventListener(new ListenerModel(this));
+		
+		
 		pawns = this.DionaRap_Model.getAllPawns(); // Frage alle Spielfiguren von DionaRapModel ab und befülle Array damit
 		this.add(BorderLayout.CENTER, spielfeld.getHintergrund());	//Schachbrettmuster dem Hauptfenster hinzufügen
 		this.spielfeld.paintAllPawns(pawns);
 		
 	}
+	
+	//loesche Spielfeld und Zeichne Figuren neu
+	public void repaintGame(){
+		
+		spielfeld.clearSpielfeld();
+		pawns = DionaRap_Model.getAllPawns();
+		spielfeld.paintAllPawns(pawns);
+		
+	}
+	
+	
 	
 	public Player getPlayer(){
 		return this.DionaRap_Model.getPlayer();

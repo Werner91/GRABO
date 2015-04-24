@@ -21,12 +21,12 @@ public class Spielfeld extends JPanel{
 	
 
 	
-	//Array mit Schachbrettfeldern Zeile x Spalte
-	private JLabel[][] schachbrett ;
-	
 	// Anzahl der Felder
 	private static int zeilen = Hauptfenster.getZeilen();
 	private static int spalten = Hauptfenster.getSpalten();
+	
+	//Array mit Schachbrettfeldern Zeile x Spalte
+		private JLabel schachbrett [][];
 	
 	
 
@@ -46,11 +46,13 @@ public class Spielfeld extends JPanel{
 	public Spielfeld(){
 		new JPanel();
 		
-		createSchachbrett();
-		//clearSpielfeld();
-		
+		//Schachbrett erzeugen
+		createSchachbrett();		
 	}
 	
+	
+	
+	//Farbe für die Schrift entsprechend des Hintergrundes waehlen
 	public Color farbe_invertieren(Color hintergrundfarbe){
 		
 		if(hintergrundfarbe.equals(Color.BLACK)){
@@ -67,28 +69,28 @@ public class Spielfeld extends JPanel{
                 
                 if(pawns[i] instanceof Destruction){
                 	
-                	schachbrett[pawns[i].getX()][pawns[i].getY()].setText("*");
-                	schachbrett[pawns[i].getX()][pawns[i].getY()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setText("*");
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));
             
                 }
                 if(pawns[i] instanceof Obstacle){	
                 	
-                	schachbrett[pawns[i].getX()][pawns[i].getY()].setText("H");
-                	schachbrett[pawns[i].getX()][pawns[i].getY()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setText("H");
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));
                 	
                 }
                 if(pawns[i] instanceof Opponent){       
                 	
-                	schachbrett[pawns[i].getX()][pawns[i].getY()].setText("G");
-                	schachbrett[pawns[i].getX()][pawns[i].getY()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setText("G");
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));
                 }
                 if(pawns[i] instanceof Player){
                 	
-                	schachbrett[pawns[i].getX()][pawns[i].getY()].setText("S");
-                	schachbrett[pawns[i].getX()][pawns[i].getY()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));                }
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setText("S");
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));                }
                 
                 if(pawns[i] instanceof Vortex){
-                	schachbrett[pawns[i].getX()][pawns[i].getY()].setBackground(Color.GREEN);
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setBackground(Color.GREEN);
                 }
         }       
 	}
@@ -112,8 +114,8 @@ public class Spielfeld extends JPanel{
 	public void createSchachbrett(){
 		
 		// Layout und Array für Schachbrett Labels
-		zeilen = 10;
-		spalten = 10;
+		//zeilen = 10;
+		//spalten = 10;
 		this.setLayout( new GridLayout(zeilen, spalten)); 
 		schachbrett = new JLabel [zeilen][spalten];
 		

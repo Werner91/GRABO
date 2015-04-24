@@ -3,6 +3,7 @@ package dionarap;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
@@ -37,12 +38,19 @@ public class Tastatur extends JPanel{
 		
 		//Array mit den Buttons zur Steuerung
 		JButton button [] = new JButton[10];
+	
 		
 		//9 Buttons mit jeweils einer Zahl erzeugen
 		for(int button_nr=9; button_nr>= 1; button_nr--){
 			button[button_nr] = new JButton("" + button_nr);
 			button[button_nr].setPreferredSize(new Dimension(50, 50));
-			button[button_nr].addActionListener(new ListenerBewegung()); // ActionListener dem Button zuweisen
+			
+			if(button_nr == 5){
+				button[button_nr].addActionListener(new ListenerWaffe()); // ActionListener Waffe dem Button zuweisen
+			}else{
+				button[button_nr].addActionListener(new ListenerBewegung()); // ActionListener Bewegen dem Button zuweisen
+			}
+			
 			add(button[button_nr]);
 		}
 	}
