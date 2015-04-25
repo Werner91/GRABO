@@ -24,9 +24,12 @@ public class Spielfeld extends JPanel{
 	// Anzahl der Felder
 	private static int zeilen = Hauptfenster.getZeilen();
 	private static int spalten = Hauptfenster.getSpalten();
+<<<<<<< HEAD
 	
 	//Array mit Schachbrettfeldern Zeile x Spalte
 		private JLabel schachbrett [][];
+=======
+>>>>>>> 08a878b8d91ced6ae2d3b953eaeb6e933de740da
 	
 	
 
@@ -45,6 +48,12 @@ public class Spielfeld extends JPanel{
 	
 	public Spielfeld(){
 		new JPanel();
+<<<<<<< HEAD
+=======
+		
+		createSchachbrett();
+		//clearSpielfeld();
+>>>>>>> 08a878b8d91ced6ae2d3b953eaeb6e933de740da
 		
 		//Schachbrett erzeugen
 		createSchachbrett();		
@@ -114,8 +123,13 @@ public class Spielfeld extends JPanel{
 	public void createSchachbrett(){
 		
 		// Layout und Array für Schachbrett Labels
+<<<<<<< HEAD
 		//zeilen = 10;
 		//spalten = 10;
+=======
+		zeilen = 10;
+		spalten = 10;
+>>>>>>> 08a878b8d91ced6ae2d3b953eaeb6e933de740da
 		this.setLayout( new GridLayout(zeilen, spalten)); 
 		schachbrett = new JLabel [zeilen][spalten];
 		
