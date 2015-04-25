@@ -50,7 +50,6 @@ public class Tastatur extends JPanel{
 			}else{
 				button[button_nr].addActionListener(new ListenerBewegung()); // ActionListener Bewegen dem Button zuweisen
 			}
-			
 			add(button[button_nr]);
 		}
 	}
