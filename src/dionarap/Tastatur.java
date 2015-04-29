@@ -40,7 +40,7 @@ public class Tastatur extends JPanel{
 		JButton button [] = new JButton[10];
 	
 		
-		//9 Buttons mit jeweils einer Zahl erzeugen
+		//9 Buttons mit jeweils einer Zahl erzeugen und Listener einfügen
 		for(int button_nr=9; button_nr>= 1; button_nr--){
 			button[button_nr] = new JButton("" + button_nr);
 			button[button_nr].setPreferredSize(new Dimension(50, 50));
@@ -50,7 +50,7 @@ public class Tastatur extends JPanel{
 			}else{
 				button[button_nr].addActionListener(new ListenerBewegung()); // ActionListener Bewegen dem Button zuweisen
 			}
-			add(button[button_nr]);
+			add(button[button_nr]); //Button in das JPanel einfügen
 		}
 	}
 }
