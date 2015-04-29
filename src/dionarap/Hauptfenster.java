@@ -60,7 +60,7 @@ public class Hauptfenster extends JFrame {
 		this.addComponentListener(new ListenerFenster(navigator));
 		this.addKeyListener(new ListenerKeyEvent()); //Listener für bewegung mit der Tastatur
 		this.setVisible(true); //Fenster sichtbar machen
-		this.requestFocus();	
+		//this.requestFocus();	
 	}
 
 	
@@ -76,9 +76,13 @@ public class Hauptfenster extends JFrame {
 		/* Listener fuer das Model registrieren */
 		DionaRap_Model.addModelChangedEventListener(new ListenerModel(this));
 		
+		// Frage alle Spielfiguren von DionaRapModel ab und befülle Array damit
+		pawns = this.DionaRap_Model.getAllPawns(); 
 		
-		pawns = this.DionaRap_Model.getAllPawns(); // Frage alle Spielfiguren von DionaRapModel ab und befülle Array damit
-		this.add(BorderLayout.CENTER, spielfeld.getHintergrund());	//Schachbrettmuster dem Hauptfenster hinzufügen
+		//Schachbrettmuster dem Hauptfenster hinzufügen
+		this.add(BorderLayout.CENTER, spielfeld.getHintergrund());
+		
+		//Zeichne alle Figuren auf das Spielfeld
 		this.spielfeld.paintAllPawns(pawns);
 		
 	}

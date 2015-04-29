@@ -43,7 +43,7 @@ public class ListenerBewegung implements ActionListener{
 		controller.movePlayer(Integer.parseInt(e.getActionCommand()));
        
         System.out.println("Move " + source.getActionCommand());
-		mainWindow.requestFocus();
+		//mainWindow.requestFocus();
 	}
 	
 }

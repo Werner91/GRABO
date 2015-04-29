@@ -28,7 +28,7 @@ public class ListenerWaffe implements ActionListener{
 		controller.shoot();
 		
 		System.out.println("Shoot " + source.getActionCommand());
-		source.requestFocus();
+		//source.requestFocus();
 	}
 	
 }
