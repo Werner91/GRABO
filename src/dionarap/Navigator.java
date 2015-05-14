@@ -8,7 +8,7 @@ import de.fhwgt.dionarap.controller.DionaRapController;
 *Realisierung des Navigationsfensters
 *
 *@author Werner Steinbinder
-*@version Aufgabe 2
+*@version Aufgabe 4
 *
 */
 
@@ -23,9 +23,16 @@ public class Navigator extends JWindow {
 	 * @param parent Vaterfenster vom Typ <code>Hauptfenster</code>
 	 */	
 	public Navigator(JFrame parent){
+		
+		//Konstruktor des Vaterfensters
 		super(parent);
 		
 		this.setSize(250, 250);
+		
+		//Polygon mit einer achteckform initialisieren
+		Polygon achteck = newPolygon();
+		this.setShape(achteck);
+		
 		//Instanz von JPanel erzeugen
 		rahmen = new JPanel();
 		//Layout Manager auf GridLayout setzen
@@ -35,7 +42,7 @@ public class Navigator extends JWindow {
 		rahmen.add(new Tastatur());
 		
 		//Rahmen erstellen und rot faerben + Rahmendicke - noetig da JWindow keine Rahmen besitzt
-		rahmen.setBorder(BorderFactory.createLineBorder(Color.red,1));
+		//rahmen.setBorder(BorderFactory.createLineBorder(Color.red,1));
 		
 		// Rahmen zu JWindow hinzufuegen
 		this.getContentPane().add(rahmen);
@@ -47,12 +54,30 @@ public class Navigator extends JWindow {
 	}
 	
 	
+	/**
+	 * Methode zum erzeugen des Polygons fuer das Achteck
+	 * @return Polygon mit achteckform
+	 */
+	private Polygon newPolygon(){
+		Polygon achteck = new Polygon();
+		achteck.addPoint(83, 0);
+		achteck.addPoint(166, 0);
+		achteck.addPoint(249, 83);
+		achteck.addPoint(249, 166);
+		achteck.addPoint(166, 249);
+		achteck.addPoint(83, 249);
+		achteck.addPoint(0, 166);
+		achteck.addPoint(0, 83);
+		
+		return achteck;
+	}
+	
      
 	
 	public void setNavLocation(){
 		//Tastaturblock rechts neben Spielfeld platzieren
 		this.setLocation( (getParent().getLocation().x + getParent().getWidth() + 40), getParent().getLocation().y);
-
+		//System.out.println(getParent());
 	}
 	
 	/**

@@ -1,24 +1,26 @@
 package dionarap;
 
 import javax.swing.*;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.io.File;
 
-import de.fhwgt.dionarap.model.objects.AbstractPawn;
 import de.fhwgt.dionarap.model.objects.*;
 
 /**
  * Spielfeld von DionaRap beinhaltet die Funktion zur erstellung des Schabrettes
  * 
  * @author Werner Steinbinder
- * @version Aufgabe 2
+ * @version Aufgabe 4
  * 
 */
 
 
 public class Spielfeld extends JPanel{
 	
+	private Hauptfenster hauptfenster;
 
 	
 	// Anzahl der Felder
@@ -26,7 +28,26 @@ public class Spielfeld extends JPanel{
 	private static int spalten = Hauptfenster.getSpalten();
 
 	//Array mit Schachbrettfeldern Zeile x Spalte
-		private JLabel schachbrett [][];
+	private JLabel schachbrett [][];
+	
+	//Icons
+	private ImageIcon iconAmmo;
+	private ImageIcon iconDestruction;
+	private ImageIcon iconGameOver;
+	private ImageIcon iconObstacle;
+	private ImageIcon iconOpponent;
+	private ImageIcon iconPlayer;
+	private ImageIcon iconPlayer1;	//links unten
+	private ImageIcon iconPlayer2;	//unten
+	private ImageIcon iconPlayer3;	//unten rechts
+	private ImageIcon iconPlayer4;	//links
+	private ImageIcon iconPlayer6;	//rechts
+	private ImageIcon iconPlayer7;	//oben links
+	private ImageIcon iconPlayer8;	//oben
+	private ImageIcon iconPlayer9;	//oben rechts
+	private ImageIcon iconPlayerLost; 
+	private ImageIcon iconVortex;
+	
 	
 
 	//getter Methode für hintergrund
@@ -42,15 +63,47 @@ public class Spielfeld extends JPanel{
 	 * 
 	 */
 	
-	public Spielfeld(){
+	public Spielfeld(Hauptfenster _hauptfenster){
 		new JPanel();
-
+		hauptfenster = _hauptfenster;
 		
 		//Schachbrett erzeugen
-		createSchachbrett();		
+		createSchachbrett();
+		//Icons erzeugen
+		createIcons();
 	}
 	
 	
+	//Erzeuge Instanzen der Icons
+	private void createIcons(){
+		
+		String theme = this.hauptfenster.getTheme();
+		
+		//verzeichnis zum Ordner in dem sich die Icons befinden
+		String verzeichnis = "icons"+File.separator+theme+File.separator;
+		
+		iconAmmo = new ImageIcon(verzeichnis+"ammo.png");
+		iconDestruction = new ImageIcon(verzeichnis+"destruction.gif");
+		iconGameOver = new ImageIcon(verzeichnis+"gameover.gif");
+		iconObstacle = new ImageIcon(verzeichnis + "obstacle.gif");
+		iconOpponent = new ImageIcon(verzeichnis + "opponent.gif");
+		iconPlayer = new ImageIcon(verzeichnis + "player.gif");
+		iconPlayer1 = new ImageIcon(verzeichnis + "player1.gif");
+		iconPlayer2 = new ImageIcon(verzeichnis + "player2.gif");
+		iconPlayer3 = new ImageIcon(verzeichnis + "player3.gif");
+		iconPlayer4 = new ImageIcon(verzeichnis + "player4.gif");
+		iconPlayer6 = new ImageIcon(verzeichnis + "player6.gif");
+		iconPlayer7 = new ImageIcon(verzeichnis + "player7.gif");
+		iconPlayer8 = new ImageIcon(verzeichnis + "player8.gif");
+		iconPlayer9 = new ImageIcon(verzeichnis + "player9.gif");
+		iconPlayerLost = new ImageIcon(verzeichnis + "loss.gif");
+		iconVortex = new ImageIcon(verzeichnis + "vortex.gif");
+		
+		
+	}
+	
+	
+	/*
 	
 	//Farbe für die Schrift entsprechend des Hintergrundes waehlen
 	public Color farbe_invertieren(Color hintergrundfarbe){
@@ -62,6 +115,7 @@ public class Spielfeld extends JPanel{
 		}
 	}
 	
+	*/
 		
 	public void paintAllPawns(AbstractPawn[] pawns) {
 		
@@ -69,30 +123,59 @@ public class Spielfeld extends JPanel{
                 
                 if(pawns[i] instanceof Destruction){
                 	
-                	schachbrett[pawns[i].getY()][pawns[i].getX()].setText("*");
-                	schachbrett[pawns[i].getY()][pawns[i].getX()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconDestruction);
+                	//schachbrett[pawns[i].getY()][pawns[i].getX()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));
             
                 }
                 if(pawns[i] instanceof Obstacle){	
                 	
-                	schachbrett[pawns[i].getY()][pawns[i].getX()].setText("H");
-                	schachbrett[pawns[i].getY()][pawns[i].getX()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconObstacle);
+                	//schachbrett[pawns[i].getY()][pawns[i].getX()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));
                 	
                 }
                 if(pawns[i] instanceof Opponent){       
                 	
-                	schachbrett[pawns[i].getY()][pawns[i].getX()].setText("G");
-                	schachbrett[pawns[i].getY()][pawns[i].getX()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconOpponent);
+                	//schachbrett[pawns[i].getY()][pawns[i].getX()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));
                 }
                 if(pawns[i] instanceof Player){
                 	
-                	schachbrett[pawns[i].getY()][pawns[i].getX()].setText("S");
-                	schachbrett[pawns[i].getY()][pawns[i].getX()].setForeground(farbe_invertieren(schachbrett[pawns[i].getX()][pawns[i].getY()].getBackground()));                }
-                
-                if(pawns[i] instanceof Vortex){
-                	schachbrett[pawns[i].getY()][pawns[i].getX()].setBackground(Color.GREEN);
+                	Player pawnPlayer = (Player) pawns[i];
+                	//Blickrichtung der Spielfigur
+                	int blickrichtung = pawnPlayer.getViewDirection();
+                	
+                	
+                	if(blickrichtung == 1){
+    					schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconPlayer1);
+    				}
+                	else if(blickrichtung == 2){
+    					schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconPlayer2);
+    				}
+                	else if(blickrichtung == 3){
+    					schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconPlayer3);
+    				}
+                	else if(blickrichtung == 4){
+    					schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconPlayer4);
+    				}
+                	else if(blickrichtung == 6){
+    					schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconPlayer6);
+    				}
+                	else if(blickrichtung == 7){
+    					schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconPlayer7);
+    				}
+                	else if(blickrichtung == 8){
+    					schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconPlayer8);
+    				}
+                	else if(blickrichtung == 9){
+    					schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconPlayer9);
+    				}
+                	
+                	
                 }
-        }       
+                if(pawns[i] instanceof Vortex){
+                	schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconVortex);
+                }          
+        }
 	}
 		
 
@@ -100,7 +183,7 @@ public class Spielfeld extends JPanel{
 	 public void clearSpielfeld() {
          for(int k=0; k < zeilen; k++){
                  for(int j=0; j < spalten; j++){
-                         schachbrett[k][j].setText("");
+                         schachbrett[k][j].setIcon(null);
                  } 
          }
 	 }
@@ -154,4 +237,22 @@ public class Spielfeld extends JPanel{
 			}
 		}
 	}
+	
+	/**
+	 * Setzt das Gewonnen / Verloren SpielerIcon auf das Spielfeld
+	 * @param Player spieler Spielerfigur
+	 * @param boolean game_lost Wurde Spiel gewonnen / verloren
+	 */
+	public void gameStatusEnd(Player spieler, boolean game_lost){
+		/* Spiel wurde verloren */
+		if(game_lost){
+			this.schachbrett[spieler.getY()][spieler.getX()].setIcon(iconPlayerLost);
+		}
+		/* Spiel gewonnen */
+		else {
+			this.schachbrett[spieler.getY()][spieler.getX()].setIcon(iconPlayer);
+		}
+	}
+	
+	
 }
