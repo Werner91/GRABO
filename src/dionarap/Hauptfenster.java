@@ -5,6 +5,7 @@ import java.io.File;
 
 import javax.swing.*;
 
+
 import de.fhwgt.dionarap.model.data.DionaRapModel;
 import de.fhwgt.dionarap.model.objects.AbstractPawn;
 import de.fhwgt.dionarap.controller.DionaRapController;
@@ -15,7 +16,7 @@ import de.fhwgt.dionarap.model.objects.Player;
 * Hauptfenster von DionaRap. Beinhaltet die main() Mehtode
 *
 * @author Werner Steinbinder
-* @version Aufgabe 3
+* @version Aufgabe 4
 *
 *
 */
@@ -149,6 +150,7 @@ public class Hauptfenster extends JFrame {
 		spielfeld.paintAllPawns(pawns);
 		
 	}
+
 	
 	
 	/**
