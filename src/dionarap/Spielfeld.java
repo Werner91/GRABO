@@ -30,7 +30,9 @@ public class Spielfeld extends JPanel{
 	//Array mit Schachbrettfeldern Zeile x Spalte
 	private JLabel schachbrett [][];
 	
+	
 	//Icons
+	
 	private ImageIcon iconAmmo;
 	private ImageIcon iconDestruction;
 	private ImageIcon iconGameOver;

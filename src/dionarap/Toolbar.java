@@ -88,6 +88,7 @@ public class Toolbar extends JToolBar{
         }
         
         //new Smilie();
+        
         paintMunitionsAnzeige();
         this.add(munition);
         
@@ -101,6 +102,7 @@ public class Toolbar extends JToolBar{
         fortschrittsbalken = new JProgressBar(0,100);
         /* Wert setzen */
         fortschrittsbalken.setValue(hauptfenster.getGameProgress());
+        /* Prozentzahl anzeigen */
         fortschrittsbalken.setStringPainted(true);
         fortschrittsbalken.setPreferredSize(new Dimension(100,20));
         spielfortschritt.add(fortschrittsbalken);

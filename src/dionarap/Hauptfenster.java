@@ -57,7 +57,6 @@ public class Hauptfenster extends JFrame {
 		this.setLayout(new BorderLayout());
 		this.init_dionarap();
 		this.pack(); //BorderLayout auf nötige größe skalieren
-	
 
 		this.setLocationRelativeTo(null); //Ort des Fensters auf dem Bildschirm festlegen
 		this.navigator = new Navigator(this);//Navigator erzeugen
@@ -68,6 +67,7 @@ public class Hauptfenster extends JFrame {
 		this.add(toolbar, BorderLayout.NORTH);
 		this.setVisible(true); //Fenster sichtbar machen
 		//this.requestFocus();	
+		this.pack(); //BorderLayout auf nötige größe skalieren
 	}
 
 	
@@ -133,11 +133,7 @@ public class Hauptfenster extends JFrame {
 	
 	 public void startNewGame(){
 		/* neues Spiel -> Model und Controller neu initialisieren + Spielfeld neu darstellen */
-		init_dionarap();
-	
-		/* Button neues Spiel deaktivieren, packen + Navigator positionieren */
-		pack();			
-		
+		init_dionarap();	
 	 }
 	
 	

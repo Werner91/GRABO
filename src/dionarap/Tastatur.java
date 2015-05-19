@@ -14,7 +14,7 @@ import javax.swing.*;
  * Klasse realisiert die Buttons zur Steuerung, abgeleitet von <code>JPanel</code>
  * 
  * @author Werner Steinbinder
- * @version Aufgabe 2
+ * @version Aufgabe 4
  */
 
 
@@ -50,7 +50,7 @@ public class Tastatur extends JPanel{
 		String tastatur_icons [] = {"taste1.gif", "taste2.gif", "taste3.gif", "taste4.gif", "taste5.gif", "taste6.gif", "taste7.gif", "taste8.gif", "taste9.gif"};
 	
 		
-		//9 Buttons mit jeweils einer Zahl erzeugen
+		//9 Buttons erzeugen
 		for(int button_nr=8; button_nr>= 0; button_nr--){
 			button[button_nr] = new JButton();
 			button[button_nr].setIcon(new ImageIcon(verzeichnis+tastatur_icons[button_nr]));
