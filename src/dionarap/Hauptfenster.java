@@ -60,14 +60,17 @@ public class Hauptfenster extends JFrame {
 
 		this.setLocationRelativeTo(null); //Ort des Fensters auf dem Bildschirm festlegen
 		this.navigator = new Navigator(this);//Navigator erzeugen
-		this.addComponentListener(new ListenerFenster(navigator));
-		this.addKeyListener(new ListenerKeyEvent()); //Listener für bewegung mit der Tastatur
+		//this.addKeyListener(new ListenerKeyEvent()); //Listener für bewegung mit der Tastatur
 		/* Toolbar hinzufuegen */
 		toolbar = new Toolbar(this);
 		this.add(toolbar, BorderLayout.NORTH);
+		this.addComponentListener(new ListenerFenster(navigator));
+		this.pack(); //BorderLayout auf nötige größe skalieren
 		this.setVisible(true); //Fenster sichtbar machen
 		//this.requestFocus();	
-		this.pack(); //BorderLayout auf nötige größe skalieren
+
+		this.addKeyListener(new ListenerKeyEvent()); //Listener für bewegung mit der Tastatur
+		this.requestFocus(); //Um den Focus
 	}
 
 	
@@ -77,12 +80,16 @@ public class Hauptfenster extends JFrame {
 		DionaRap_Model = new DionaRapModel(y,x,gegner,hindernisse);
 		//Controller von DionaRap initialisieren
 		DionaRap_Controller = new DionaRapController(DionaRap_Model);
-		//Wenn das Spiel nach einem Vorherigen Spiel neu gestartet wird, muss das Spielfeld erst gelöscht werden
+		
+		//*** Wenn das Spiel nach einem Vorherigen Spiel neu gestartet wird, muss das Spielfeld erst gelöscht werden
 		if(spielfeld != null){
 			this.remove(spielfeld);
 		}
 		
 		spielfeld = new Spielfeld(this); //Spielfeld erzeugen
+		
+		//Schachbrettmuster dem Hauptfenster hinzufügen
+		this.add(BorderLayout.CENTER, spielfeld.getHintergrund());
 		
 		/* Listener fuer das Model registrieren */
 		DionaRap_Model.addModelChangedEventListener(new ListenerModel(this, spielfeld));
@@ -90,8 +97,7 @@ public class Hauptfenster extends JFrame {
 		// Frage alle Spielfiguren von DionaRapModel ab und befülle Array damit
 		pawns = this.DionaRap_Model.getAllPawns(); 
 		
-		//Schachbrettmuster dem Hauptfenster hinzufügen
-		this.add(BorderLayout.CENTER, spielfeld.getHintergrund());
+	
 		
 		//Zeichne alle Figuren auf das Spielfeld
 		this.spielfeld.paintAllPawns(pawns);
@@ -100,7 +106,6 @@ public class Hauptfenster extends JFrame {
 		if(toolbar != null){
 			toolbar.updateToolbar();			
 		}
-		
 		
 	}
 	
@@ -132,6 +137,7 @@ public class Hauptfenster extends JFrame {
 	 }
 	
 	 public void startNewGame(){
+		 
 		/* neues Spiel -> Model und Controller neu initialisieren + Spielfeld neu darstellen */
 		init_dionarap();	
 	 }

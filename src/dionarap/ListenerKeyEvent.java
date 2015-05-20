@@ -52,6 +52,7 @@ public class ListenerKeyEvent implements KeyListener{
 		else {
 			System.out.println(e.getKeyChar());
 		}
+
 	}
 	
 	

@@ -117,7 +117,7 @@ public class Toolbar extends JToolBar{
 		settings.addActionListener(new ListenerToolbar());
 		this.add(settings);
         
-        
+		
 	}
 	
 	
