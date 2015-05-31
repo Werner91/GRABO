@@ -75,6 +75,17 @@ public class Spielfeld extends JPanel{
 		createIcons();
 	}
 	
+	/**
+	 * Methode aktualisiert das Theme
+	 */
+	public void changeTheme(){
+		this.createIcons();
+		this.clearSpielfeld();
+		this.paintAllPawns(hauptfenster.getPawns());	
+	}
+	
+	
+	
 	
 	//Erzeuge Instanzen der Icons
 	private void createIcons(){
@@ -233,7 +244,9 @@ public class Spielfeld extends JPanel{
 				}
 				
 				/* Label deckend darstellen */
-				schachbrett[y_achse][x_achse].setOpaque(true);
+				this.schachbrett[y_achse][x_achse].setOpaque(true);
+				/* Listener registrieren */
+				this.schachbrett[y_achse][x_achse].addMouseListener(new ListenerMaus(hauptfenster));
 				//Das Array mit den Labels zum Panel hinzufügen
 				this.add(schachbrett[y_achse][x_achse]);
 			}
@@ -256,5 +269,12 @@ public class Spielfeld extends JPanel{
 		}
 	}
 	
+	
+	/**
+	 * Gibt das Spielfeld zurueck
+	 */
+	public JLabel[][] getSpielfeldArray(){
+		return this.schachbrett;
+	}
 	
 }

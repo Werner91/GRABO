@@ -183,10 +183,10 @@ public class Toolbar extends JToolBar{
 		ImageIcon icon_munition = new ImageIcon(pathIcon);
 		
 		
-		int ammocount = hauptfenster.getDionaRapModel().getShootAmount();
+		//int ammocount = hauptfenster.getDionaRapModel().getShootAmount();
 		
 		// Anzahl an Munition < 0 -> unendlich -> zeige alle Icons an 
-		if(ammocount < 0){				
+		//if(ammocount < 0){				
 			munition_arr[0].setBorder(null);
 			munition.add(munition_arr[0]);
 			for(int i=0;i<3;i++){
@@ -195,7 +195,7 @@ public class Toolbar extends JToolBar{
 				munition.add(munition_arr[i]);
 		
 			}
-		}
+		//}
 		
 	}
 	

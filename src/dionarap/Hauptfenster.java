@@ -5,12 +5,12 @@ import java.io.File;
 
 import javax.swing.*;
 
-
 import de.fhwgt.dionarap.model.data.DionaRapModel;
 import de.fhwgt.dionarap.model.objects.AbstractPawn;
 import de.fhwgt.dionarap.controller.DionaRapController;
 import de.fhwgt.dionarap.model.objects.Player;
-
+import de.fhwgt.dionarap.model.data.Grid;
+import de.fhwgt.dionarap.model.data.MTConfiguration;
 /**
 *
 * Hauptfenster von DionaRap. Beinhaltet die main() Mehtode
@@ -30,12 +30,13 @@ public class Hauptfenster extends JFrame {
 	private DionaRapController DionaRap_Controller;
 	private static int y = 10;
 	private static int x = 10;
-	private int gegner = 4;
+	private int gegner = 2;
 	private int hindernisse = 4;
 	private AbstractPawn[] pawns;
 	private Navigator navigator;
 	private String theme = "Dracula";
 	private Toolbar toolbar;
+	private MenuBar menubar;
 	
 	
 	
@@ -65,11 +66,17 @@ public class Hauptfenster extends JFrame {
 		toolbar = new Toolbar(this);
 		this.add(toolbar, BorderLayout.NORTH);
 		this.addComponentListener(new ListenerFenster(navigator));
+		
+		/*Menuleiste hinzufuegen */
+		this.setJMenuBar(menubar = new MenuBar(this));
+		
+		
 		this.pack(); //BorderLayout auf nötige größe skalieren
 		this.setVisible(true); //Fenster sichtbar machen
 		//this.requestFocus();	
 
 		this.addKeyListener(new ListenerKeyEvent()); //Listener für bewegung mit der Tastatur
+		this.addMouseListener(new ListenerMaus(this));
 		this.requestFocus(); //Um den Focus
 	}
 
@@ -143,7 +150,28 @@ public class Hauptfenster extends JFrame {
 	 }
 	
 	
-	
+	 /**
+	  * Methode um die Toolbar zu positionieren
+	  * @param top zeige Toolbar oben (true) oder unten an (false)
+	  */
+	 public void setToolbarPosition(boolean top){
+		 //toolbar oben anzeigen
+		 if(top){
+			 this.remove(toolbar);
+			 this.add(toolbar, BorderLayout.NORTH);
+			 this.pack();
+		 }
+		 //Toolbar unten anzeigen
+		 else{
+			 this.remove(toolbar);
+			 this.add(toolbar, BorderLayout.SOUTH);
+			 this.pack();
+		 }
+	 }
+	 
+	 
+	 
+	 
 	//loesche Spielfeld und Zeichne Figuren neu
 	public void repaintGame(){
 		
@@ -153,6 +181,18 @@ public class Hauptfenster extends JFrame {
 		
 	}
 
+	
+	
+	/**
+	 * Gibt Navigator zurueck. 
+	 * @return Navigator
+	 */
+	public Navigator getNavigator(){
+		return this.navigator;
+	}	
+	
+	
+	
 	
 	
 	/**
@@ -167,12 +207,45 @@ public class Hauptfenster extends JFrame {
 	
 	
 	/**
+	 * Gibt das Spielverzeichnis zurueck
+	 * @return String spieleverzeichnis
+	 */
+	public static String getGameDirectory(){
+		String gamedirectory = System.getProperty("user.dir");
+		String separator = System.getProperty("file.separator");
+		return (gamedirectory + separator);
+	}
+	
+	
+	
+	/**
 	 * Gibt Toolbar zurueck. 
 	 * @return Toolbar
 	 */
 	public Toolbar getToolbar(){
 		return this.toolbar;
 	}
+	
+	
+	/**
+	 * Gibt Spielfeld zurueck. 
+	 * @return Spielfeld
+	 */
+	public Spielfeld getSpielfeld(){
+		return this.spielfeld;
+	}
+
+	
+	
+	
+	/**
+	 * Gibt Array mit Spielfiguren zurueck. 
+	 * @return all Pawns
+	 */
+	public AbstractPawn[] getPawns(){
+		return this.DionaRap_Model.getAllPawns();
+	}
+	
 	
 	
 	/**
@@ -190,6 +263,17 @@ public class Hauptfenster extends JFrame {
 	public DionaRapController getDionaRapController(){
 		return DionaRap_Controller;
 	}
+	
+	/**
+	 * Setzt das Theme
+	 * @param String theme
+	 */
+	public void setTheme(String theme){
+		this.theme = theme;
+		this.spielfeld.changeTheme();
+	}
+	
+	
 	
 	
 	/**
