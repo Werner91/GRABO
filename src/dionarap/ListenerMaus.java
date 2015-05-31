@@ -187,40 +187,9 @@ public class ListenerMaus extends MouseAdapter implements ActionListener{
 						}
 					}
 				}
-			}
-			
-			
-			
-			
-			
+			}		
 		}
-	}
-	
-	
-	
-	/**
-	 * Methode prueft ob an der geklickten Stelle sich ein Hindernis befindet
-	 * @param i x-Koordinate des Klicks
-	 * @param j j-Koordinate des Klicks
-	 * @return true falls sich an der geklickten Stelle ein Hindernis befindet
-	 */
-	private boolean isThereAnObstacle(int i, int j){
-		AbstractPawn[] dionaRap_Pawns = hauptfenster.getPawns();
-		for(int k=0;k < dionaRap_Pawns.length;k++){
-			if(dionaRap_Pawns[k] instanceof Obstacle){
-				/* erfrage Position der Figur */
-				int posX = dionaRap_Pawns[k].getX();
-				int posY = dionaRap_Pawns[k].getY();							
-				if((posY == i) && (posX == j)){
-					return true;
-				}									
-			}
-		}
-		return false;
-	}
-	
-	
-	
+	}	
 }
 
 
