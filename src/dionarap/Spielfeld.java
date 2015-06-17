@@ -13,7 +13,7 @@ import de.fhwgt.dionarap.model.objects.*;
  * Spielfeld von DionaRap beinhaltet die Funktion zur erstellung des Schabrettes
  * 
  * @author Werner Steinbinder
- * @version Aufgabe 4
+ * @version Aufgabe 6
  * 
 */
 
@@ -24,8 +24,8 @@ public class Spielfeld extends JPanel{
 
 	
 	// Anzahl der Felder
-	private static int zeilen = Hauptfenster.getZeilen();
-	private static int spalten = Hauptfenster.getSpalten();
+	private int zeilen;
+	private int spalten;
 
 	//Array mit Schachbrettfeldern Zeile x Spalte
 	private JLabel schachbrett [][];
@@ -69,6 +69,9 @@ public class Spielfeld extends JPanel{
 		new JPanel();
 		hauptfenster = _hauptfenster;
 		
+		zeilen = hauptfenster.getDionaRapModel().getGrid().getGridSizeX();
+		spalten = hauptfenster.getDionaRapModel().getGrid().getGridSizeY();
+
 		//Schachbrett erzeugen
 		createSchachbrett();
 		//Icons erzeugen
@@ -129,11 +132,26 @@ public class Spielfeld extends JPanel{
 	}
 	
 	*/
+	
+	/**
+	 * Ermittelt Typ und Position der Spielfigur vom Typ <code>AbstractPawn</code> 
+	 * und zeichnet das Icon auf das Spielfeld.
+	 * @param dionaRap_Pawns Spielfigur vom Typ <code>AbstractPawn</code>
+	 */
 		
 	public void paintAllPawns(AbstractPawn[] pawns) {
 		
+	
+		
         for(int i=0;i<pawns.length;i++){
                 
+        		
+        	
+        		if(pawns[i] instanceof Ammo){
+        			schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconAmmo);
+        		}
+        	
+        	
                 if(pawns[i] instanceof Destruction){
                 	
                 	schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconDestruction);
@@ -187,19 +205,48 @@ public class Spielfeld extends JPanel{
                 }
                 if(pawns[i] instanceof Vortex){
                 	schachbrett[pawns[i].getY()][pawns[i].getX()].setIcon(iconVortex);
-                }          
+                }        
+                
+                
         }
 	}
 		
 
-	
+	/*Lösche Icons vom Spielfeld*/
 	 public void clearSpielfeld() {
+		zeilen = hauptfenster.getDionaRapModel().getGrid().getGridSizeY();
+		spalten = hauptfenster.getDionaRapModel().getGrid().getGridSizeX();
+		 
          for(int k=0; k < zeilen; k++){
                  for(int j=0; j < spalten; j++){
                          schachbrett[k][j].setIcon(null);
                  } 
          }
 	 }
+	 
+	 
+	 /**
+		 * Löscht die Lables vom Spielfeld
+		 */
+		public void removeSpielfeldLabels(){
+			int size_x = hauptfenster.getDionaRapModel().getGrid().getGridSizeX();
+			int size_y = hauptfenster.getDionaRapModel().getGrid().getGridSizeY();		
+			/* gehe Felder nacheinander durch */
+			for(int zeile = 0; zeile < size_y; zeile++){
+				for(int spalte = 0; spalte < size_x; spalte++){
+					this.remove(schachbrett[zeile][spalte]);
+				}
+			}
+		}	
+	 
+	 
+		/**
+		 * Loescht die Icons vom Spielfeld und zeichnet diese neu
+		 */
+		public void repaintPawns(){
+			this.clearSpielfeld();
+			this.paintAllPawns(this.hauptfenster.getPawns());
+		}
 	
 	
 	/**
@@ -213,13 +260,18 @@ public class Spielfeld extends JPanel{
 
 		//zeilen = 10;
 		//spalten = 10;
-
-		this.setLayout( new GridLayout(zeilen, spalten)); 
-		schachbrett = new JLabel [zeilen][spalten];
+		
+		int size_x = hauptfenster.getDionaRapModel().getGrid().getGridSizeX();
+		int size_y = hauptfenster.getDionaRapModel().getGrid().getGridSizeY();
 		
 		
-		for(int y_achse = 0; y_achse < zeilen; y_achse++){
-			for(int x_achse = 0; x_achse < spalten; x_achse++){
+		
+		this.setLayout( new GridLayout(size_y, size_x)); 
+		schachbrett = new JLabel [size_y][size_x];
+		
+		
+		for(int y_achse = 0; y_achse < size_y; y_achse++){
+			for(int x_achse = 0; x_achse < size_x; x_achse++){
 				// Label mit 50 x 50 pixel anlegen
 				schachbrett[y_achse][x_achse] = new JLabel();
 				schachbrett[y_achse][x_achse].setPreferredSize(new Dimension(50,50));

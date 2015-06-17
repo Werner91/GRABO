@@ -41,10 +41,10 @@ public class Toolbar extends JToolBar{
 	private JPanel punktestand;
 	private JTextField punktestandtext;
 	private JPanel munition;
-	private JLabel munition_arr[] = new JLabel[3];;
+	private JLabel munition_arr[] = new JLabel[3];
 	private JProgressBar fortschrittsbalken;
 	private JPanel spielfortschritt;
-	
+	private int ammoCounter = 0;
 	
 	public Toolbar(Hauptfenster _hauptfenster){
 		hauptfenster = _hauptfenster;
@@ -112,8 +112,6 @@ public class Toolbar extends JToolBar{
         /*Button Settings */
 		settings = new JButton("Settings");
 		settings.setActionCommand("settings");
-		/* Button ist nur aktiv wenn das Spiel gewonnen / verloren wurde */
-		settings.setEnabled(false);
 		settings.addActionListener(new ListenerToolbar());
 		this.add(settings);
         
@@ -174,82 +172,139 @@ public class Toolbar extends JToolBar{
 	/**
 	 * Methode stellt die Munitionsanzeige in der Toolbar dar
 	 */
-	
-	
-	
+		
 	public void paintMunitionsAnzeige(){
 		String theme = hauptfenster.getTheme();
 		String pathIcon = "icons"+File.separator+theme+File.separator + "ammo.png";
 		ImageIcon icon_munition = new ImageIcon(pathIcon);
+		int ammocount = hauptfenster.getDionaRapModel().getShootAmount(); // Anzahl an verfuegbaren Schüssen
 		
-		
-		//int ammocount = hauptfenster.getDionaRapModel().getShootAmount();
-		
-		// Anzahl an Munition < 0 -> unendlich -> zeige alle Icons an 
-		//if(ammocount < 0){				
-			munition_arr[0].setBorder(null);
-			munition.add(munition_arr[0]);
-			for(int i=0;i<3;i++){
-				munition_arr[i].setIcon(icon_munition);
-				munition_arr[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		/* Hat sich die Munitionsanzahl veraendert */
+		if(ammocount != this.ammoCounter){
+			/*aktualisieren Zaehler + setze Array zurueck*/
+			this.ammoCounter = ammocount;
+			/*Munitions anzeige nochmal komplett löschen*/
+			for(int i=0; i<3; i++){
+				munition_arr[i].setText(null);
+				munition_arr[i].setIcon(null);
+				munition_arr[i].setBorder(null);
+				munition.remove(munition_arr[i]);
 				munition.add(munition_arr[i]);
-		
 			}
-		//}
-		
+			
+			/*Anzahl an Munition > 3 -> zwei icons + anzahl wie viele schüsse insgesamt*/
+			if(ammocount > 3 ){
+				munition_arr[0].setBorder(null);
+				munition_arr[0].setText("x"+ String.valueOf(ammoCounter));
+				for(int i = 1; i < 3; i++){
+					munition_arr[i].setIcon(icon_munition);
+					munition_arr[i].setBorder(BorderFactory.createLineBorder(Color.black));
+					munition.add(munition_arr[i]);
+				}
+			}
+		/* Anzahl an Munition <= 3 && >= 0 -> zeige zwischen 1-3 Icons an */
+			else if(ammocount <= 3 && ammocount >= 0){
+				for(int i=0; i < ammocount; i++){
+					//munition_arr[i].add(new Smilie());
+					//munition_arr[i].setIcon(icon_munition);
+					//munition_arr[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+					//munition.add(munition_arr[i]);
+					munition.add(new Smilie());
+					//munition_arr[i].add(new Smilie());
+					//munition.add(munition_arr[i]);
+				
+				}
+			}
+			
+			
+			
+		}
+				
+		//Anzeige an Look & Feel anpassen
+		munition.updateUI();
 	}
 	
 	
 	
-	/*
+	/******************** 2D Graphics ************/
 	private class Smilie extends JPanel
 	{
+		
+		String theme = hauptfenster.getTheme();
+		String pathIcon = "icons"+File.separator+theme+File.separator + "ammo.png";
+		ImageIcon icon_munition = new ImageIcon(pathIcon);
+
+		
 		Smilie() {}
 		
 		public void paintComponent(Graphics g)
 		{   Graphics2D g2d = (Graphics2D) g;
-		    int x = 20;
+		    int x = 25;
 		    int y = 20;
-            int abstand = 0;
 		    
 		    super.paintComponent(g);
+		    //super.paintChildren(g);
 		    // Smilie
-			g2d.drawOval(x-10,y-10,20,20);
-			g2d.setColor(Color.yellow);
-			g2d.fillOval(x-10,y-10,20,20);
-			// Augen
-			g2d.setColor(Color.black);
-			g2d.fillRect(x-6,y-5,4,5);
-			g2d.fillRect(x+3,y-4,4,5);
-	       // Mund
-			g2d.drawArc(x-7,y-7,14,14,225,100); 
-			
-			
-		}	
-		
+		   			
+				for(int i=0;i<3;i++){
+					x = munition_arr[i].getX();
+					y = munition_arr[i].getY();
+		    
+					/*
+					// Smilie
+					g2d.drawOval(x,y,20,20);
+					g2d.setColor(Color.yellow);
+					g2d.fillOval(x,y,20,20);
+					// Augen
+					g2d.setColor(Color.black);
+					g2d.fillRect(x-6,y-5,4,5);
+					g2d.fillRect(x+3,y-4,4,5);
+					// Mund
+					g2d.drawArc(x-7,y-7,14,14,225,100);
+					
+					drawImage(g2d ,0, 25, 25);
+					 
+					 */
+					
+					
+					Image ammo_img = Toolkit.getDefaultToolkit().getImage(pathIcon);
+					g2d.drawImage(ammo_img, 0 ,0 , 25, 25, this);
+					g2d.finalize();
+					
+					
+					
+				}	
+		   }
 	}
 	
 	
 	
 	
+	
+	
+	
+	
+	
+	/*
+	
 	public void paintChildren(Graphics g){
 		
 		 Graphics2D g2d = (Graphics2D) g;
-		    int x = 250;
+		    int x = 20;
 		    int y = 20;
 		    int abstand = 0;
 		    
 		    int ammocount = hauptfenster.getDionaRapModel().getShootAmount();
 		    super.paintComponent(g);
 			// Anzahl an Munition < 0 -> unendlich -> zeige alle Icons an 
-			if(ammocount < 0){				
+			if(ammocount > 0){				
 				munition_arr[0].setBorder(null);
 				munition.add(munition_arr[0]);
 				for(int i=0;i<3;i++){
 					//munition_arr[i].setIcon(icon_munition);
 					munition_arr[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-					//x = munition_arr[i].getX();
-					//y = munition_arr[i].getY();
+					x = munition_arr[i].getX();
+					y = munition_arr[i].getY();
 					
 					//munition.add(munition_arr[i]);
 		    
@@ -266,14 +321,13 @@ public class Toolbar extends JToolBar{
 			g2d.drawArc(x-7,y-7,14,14,225,100); 
 			//abstand += 15;
 			//x += abstand;
-		
-			munition.add(munition_arr[i]);
+
 				}
 			}
 	}
 	//}
-	'/
 	
+	*/
 
 
 	/**
@@ -310,5 +364,21 @@ public class Toolbar extends JToolBar{
 		this.setVisible(false);
 	}
 	
+	/**
+	 * Methode gibt das Array fuer die Labels der Munitionsanzeige zurueck
+	 * @return JLabel[]
+	 */
+	public JLabel[] getMuniJLabelArr(){
+		return munition_arr;
+	}
+	
+	
+	/**
+	 * Methode gibt das Panel fuer die Munitionsanzeige zurueck
+	 * @return JPanel gibt das JPanel der Munitionsanzeige zurueck
+	 */
+	public JPanel getMuniJPanel(){
+		return munition;		
+	}
 	
 }

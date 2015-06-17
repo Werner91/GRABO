@@ -1,8 +1,11 @@
 package dionarap;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -22,10 +25,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-
-
-
 import de.fhwgt.dionarap.levelreader.LevelReader;
+import de.fhwgt.dionarap.model.data.MTConfiguration;
+
 
 /**
  * Klasse realisiert das Menu, abgeleitet von <code>JMenuBar</code>, implementiert <code>ActionListener</code>
@@ -71,7 +73,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	private JMenuItem leveleinlesen;
 	private JMenuItem spieleinstellungen;
 	
-	
+
 	//Hilfe Elemeten
 	private JMenuItem spielbeschreibung;
 	
@@ -144,7 +146,11 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		leveleinlesen = new JMenuItem ("Level Einlesen");
 		leveleinlesen.addActionListener(this);
 		konfiguration.add(leveleinlesen);
-		
+		konfiguration.add(new JSeparator());
+		//Spieleinstellungen - MenuItem, Listener, deaktivieren, hinzufuegen
+		spieleinstellungen = new JMenuItem("Spieleinstellungen");
+		spieleinstellungen.addActionListener(this);
+		konfiguration.add(spieleinstellungen);
 		
 		
 		/* Menu Hilfe */
@@ -250,12 +256,54 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		}
 		
 		/* Levelreader XML einlesen */
-		// -----> kommt in der nächsten Aufgabe
+		if(e.getSource() == leveleinlesen){
+			/*Filechooser mit XML-Filter */
+			JFileChooser filechooser = new JFileChooser(Hauptfenster.getGameDirectory() + "levels");
+			filechooser.setFileFilter(new XMLExtensionFileFilter("XML", new String[]{"xml"}));
+			int returnvalue = filechooser.showOpenDialog(hauptfenster);
+			if(returnvalue == JFileChooser.APPROVE_OPTION){
+				/* lösche die Labels + icons vom Spielfeld */
+				//hauptfenster.getSpielfeld().clearSpielfeld();
+				hauptfenster.getSpielfeld().removeSpielfeldLabels();
+				/* starte Levelreader (erwartet Instanz des DionaRap Models + MTConfiguration) und uebergebe ausgewählte Datei */
+				LevelReader levelreader = new LevelReader(hauptfenster.getMTConfiguration(), hauptfenster.getDionaRapModel());
+				levelreader.readLevel(filechooser.getSelectedFile().toString());
+				/* neues Spielfeld + zeichne Icons */
+				hauptfenster.getSpielfeld().createSchachbrett();
+				hauptfenster.getSpielfeld().repaintPawns();
+				/* setze neue Multithreading Konfiguration */
+				hauptfenster.getDionaRapController().setMultiThreaded(hauptfenster.getDionaRapModel().getActiveConfiguration());
+				/*Toolbar aktualisieren */
+				hauptfenster.getToolbar().updateToolbar();
+				/* Hauptfenster packen + Navigator neu positionieren (Spielfeldgroesse hat sich evtl. geändert)*/
+				hauptfenster.pack();
+				hauptfenster.getNavigator().setNavLocation();
+				
+				
+				//soll nachdem ein Level eingelesen wurde beim naechsten neuen Spiel diese Daten uebernommen werden oder "standartspiel" gestartet werden?
+				/* aktualisiere Spieleinstellungen mit den Einstellungen aus der XML */
+				hauptfenster.updateGameSettings(
+					hauptfenster.getDionaRapModel().getGrid().getGridSizeY(),
+					hauptfenster.getDionaRapModel().getGrid().getGridSizeX(),
+					hauptfenster.getDionaRapModel().getOpponentCount(),
+					hauptfenster.getDionaRapModel().getObstacles().size()
+				);
+				
+				hauptfenster.setFlagGameSettingsChanged();
+			}
+		}
 		
+		/* Spieleinstellungen-Dialog anzeigen */
+			if(e.getSource() == spieleinstellungen){
+				new Spieleinstellungen(hauptfenster);
+			}
 		
+			
+			
 		/* anzeigen der Spielbeschreibung */
 		if(e.getSource() == spielbeschreibung){
 			new Spielebeschreibung(hauptfenster);
 		}
-	}	
+	}
+	
 }

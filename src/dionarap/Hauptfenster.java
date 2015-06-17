@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import de.fhwgt.dionarap.model.data.DionaRapModel;
 import de.fhwgt.dionarap.model.objects.AbstractPawn;
+import de.fhwgt.dionarap.model.objects.Ammo;
 import de.fhwgt.dionarap.controller.DionaRapController;
 import de.fhwgt.dionarap.model.objects.Player;
 import de.fhwgt.dionarap.model.data.Grid;
@@ -16,7 +17,7 @@ import de.fhwgt.dionarap.model.data.MTConfiguration;
 * Hauptfenster von DionaRap. Beinhaltet die main() Mehtode
 *
 * @author Werner Steinbinder
-* @version Aufgabe 4
+* @version Aufgabe 6
 *
 *
 */
@@ -26,17 +27,36 @@ public class Hauptfenster extends JFrame {
 	
 	
 	private Spielfeld spielfeld;
-	private DionaRapModel DionaRap_Model;
-	private DionaRapController DionaRap_Controller;
-	private static int y = 10;
-	private static int x = 10;
+
+	private int y = 10;
+	private int x = 10;
 	private int gegner = 2;
 	private int hindernisse = 4;
+	private int ammo_count = 3;
+	private int ammo_start = 3;
 	private AbstractPawn[] pawns;
+	
 	private Navigator navigator;
-	private String theme = "Dracula";
 	private Toolbar toolbar;
 	private MenuBar menubar;
+	
+	/* Theme beim Spielstart */
+	private String theme = "Dracula";
+	
+	/*Model + Controler */
+	private DionaRapModel DionaRap_Model;
+	private DionaRapController DionaRap_Controller;
+	
+	/* Multithreading-Konfiguration */
+	private static MTConfiguration MTConf = new MTConfiguration();
+	
+	/* Flag ob Spieleinstellungen angepasst wurden */
+	private boolean game_settings_changed = false;
+	
+	/* Thread - binken der Munitionsanzeuge */
+	private Thread t_ammo;
+	
+	
 	
 	
 	
@@ -92,6 +112,13 @@ public class Hauptfenster extends JFrame {
 		if(spielfeld != null){
 			this.remove(spielfeld);
 		}
+		//Anzahl der Munition zu beginn des Spiels
+		DionaRap_Model.setShootAmount(ammo_start);
+		
+		//Ammo-Objekte auf dem Spielfeld anlegen
+		for(int i = 1; i <= ammo_count; i++ ){
+		DionaRap_Model.addAmmo(new Ammo());
+		}
 		
 		spielfeld = new Spielfeld(this); //Spielfeld erzeugen
 		
@@ -104,10 +131,15 @@ public class Hauptfenster extends JFrame {
 		// Frage alle Spielfiguren von DionaRapModel ab und befülle Array damit
 		pawns = this.DionaRap_Model.getAllPawns(); 
 		
-	
-		
 		//Zeichne alle Figuren auf das Spielfeld
 		this.spielfeld.paintAllPawns(pawns);
+		
+		
+		/* Multithreading Konfiguration initialisieren (bzw. Werte aus dem Einstellungsdialog uebernehmen) und aktivieren*/
+		if(game_settings_changed == false){
+			this.init_MTConfiguration();
+		}
+		DionaRap_Controller.setMultiThreaded(MTConf);
 		
 		/* Toolbar aktualisieren */
 		if(toolbar != null){
@@ -115,6 +147,25 @@ public class Hauptfenster extends JFrame {
 		}
 		
 	}
+	
+	
+	/**
+	 * Initialisiere die Multithreading-Einstellungen
+	 */
+	private void init_MTConfiguration(){
+		MTConf.setAlgorithmAStarActive(true);
+		MTConf.setAvoidCollisionWithObstacles(true);
+		MTConf.setAvoidCollisionWithOpponent(true);
+		MTConf.setMinimumTime(800);
+		MTConf.setShotGetsOwnThread(true);
+		MTConf.setOpponentStartWaitTime(6000);
+		MTConf.setOpponentWaitTime(4000);
+		MTConf.setShotWaitTime(1000);
+		MTConf.setRandomOpponentWaitTime(false);
+		MTConf.setDynamicOpponentWaitTime(false);
+	}
+	
+	
 	
 	
 	 public void drawGameResultDialog(Boolean game_lost){
@@ -143,10 +194,20 @@ public class Hauptfenster extends JFrame {
 		}		
 	 }
 	
+	 /**
+	  * Methode startet ein neues Spiel - Model + Controller werden
+	  * initialisiert, Spielfeld wird neu gezeichnet und die Toolbar
+	  * positioniert
+	  */
 	 public void startNewGame(){
 		 
 		/* neues Spiel -> Model und Controller neu initialisieren + Spielfeld neu darstellen */
 		init_dionarap();	
+		/* Button neues Spiel deaktivieren, packen + Navigator positionieren */
+		this.getToolbar().setButtonNSDisabled();
+		this.pack();
+		this.navigator.setNavLocation(); // Navigator neu Positionieren
+		this.requestFocus();
 	 }
 	
 	
@@ -219,6 +280,15 @@ public class Hauptfenster extends JFrame {
 	
 	
 	/**
+	 * Gibt die Anzahl der Hindernisse zurueck.
+	 * @return hindernisse 
+	 * 
+	 */
+	public int getHindernisse(){
+		return hindernisse;
+	}
+	
+	/**
 	 * Gibt Toolbar zurueck. 
 	 * @return Toolbar
 	 */
@@ -288,7 +358,7 @@ public class Hauptfenster extends JFrame {
 	 * Gibt gibt die y-Koordinate des Felds zurueck. 
 	 * @return y
 	 */
-	public static int  getZeilen(){
+	public int  getZeilen(){
 		return y;
 	}
 	
@@ -296,9 +366,20 @@ public class Hauptfenster extends JFrame {
 	 * Gibt gibt die x-Koordinate des Felds zurueck. 
 	 * @return x
 	 */
-	public static int getSpalten(){
+	public int getSpalten(){
 		return x;
 	}
+	
+	
+	/**
+	 * Gibt Multithreading Konfiguration zurueck. 
+	 * @return MTConf
+	 */
+	public MTConfiguration getMTConfiguration(){
+		return Hauptfenster.MTConf;
+	}		
+
+	
 	
 	/**
 	 * Gibt das Model zurueck. 
@@ -307,5 +388,43 @@ public class Hauptfenster extends JFrame {
 	public DionaRapModel getDionaRapModel(){
 		return DionaRap_Model;
 	}
+
+	/**
+	 * Gibt den Thread fuer das Blinken der Munitionsanzeige zurueck
+	 * @return Thread
+	 */
+	public Thread getThreadt_ammo(){
+		return t_ammo;		
+	}
+
+	
+	/**
+	 * Methode startet den Thread fuer das Blinken der Munitionsanzeige
+	 */
+	public void createThreadt_ammo(){
+		t_ammo = new ThreadAmmo(this);
+		t_ammo.start();
+	}
+	
+	/**
+	 * Methode setzt das Flag fuer die Spieleinstellungen auf true wenn
+	 * diese geaendert wurden
+	 */
+	public void setFlagGameSettingsChanged(){
+		this.game_settings_changed = true;
+	}
+	
+	
+	/**
+	 * Methode aktualisiert die Groesse des Spielfelds, Anzahl an Gegnern + Hindernisse
+	 * @param int y, int x, int opponents, int obstacles - Groesse des Felds in x- und y-Richtung, Anzahl an Gegner + Hindernisse
+	 */
+	public void updateGameSettings(int y, int x, int opponents, int obstacles){
+		this.y = y;
+		this.x = x;
+		this.gegner = opponents;
+		this.hindernisse = obstacles;
+	}
+	
 	
 }

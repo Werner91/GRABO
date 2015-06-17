@@ -34,7 +34,7 @@ public class ListenerToolbar implements ActionListener {
 		}
 		
 		if(button.getActionCommand() == "settings"){
-			
+			new Settings(hauptfenster);	
 		}
 		
 		hauptfenster.requestFocus();

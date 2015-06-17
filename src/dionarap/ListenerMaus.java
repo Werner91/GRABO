@@ -112,6 +112,8 @@ public class ListenerMaus extends MouseAdapter implements ActionListener{
 	 */
 	
 	public void mouseClicked(MouseEvent e){
+		int size_x = hauptfenster.getDionaRapModel().getGrid().getGridSizeX();
+		int size_y = hauptfenster.getDionaRapModel().getGrid().getGridSizeY();
 		/*Rechtsklick*/
 		if(e.getButton() == 3){
 			/*zeige Popupmenu an*/
@@ -120,8 +122,8 @@ public class ListenerMaus extends MouseAdapter implements ActionListener{
 		//Linksklick
 		else if(e.getButton() == 1) {	
 			/* groesse des Spielfelds */
-			int size_x = hauptfenster.getDionaRapModel().getGrid().getGridSizeX();
-			int size_y = hauptfenster.getDionaRapModel().getGrid().getGridSizeY();
+			size_x = hauptfenster.getDionaRapModel().getGrid().getGridSizeX();
+			size_y = hauptfenster.getDionaRapModel().getGrid().getGridSizeY();
 			/* lege Spielfeld an */
 			labelArray = new JLabel[size_x][size_y];
 			labelArray = hauptfenster.getSpielfeld().getSpielfeldArray();
@@ -137,9 +139,22 @@ public class ListenerMaus extends MouseAdapter implements ActionListener{
 						
 						/*es wurde auf den Spieler geklickt - schiessen */
 						if( i == playerposition_y && j == playerposition_x){
-							DRController.shoot();
-						
-						//break;
+							/*pruefe ob Munition vorhanden - falls nicht erzeuge Thread um Anzeige zum Blinken zu bringen */
+							if(hauptfenster.getDionaRapModel().getShootAmount() == 0){
+								/*erzeuge neuen THread falls dieser noch nicht besteht */
+								if(hauptfenster.getThreadt_ammo() == null){
+									hauptfenster.createThreadt_ammo();
+								}
+								/* oder nicht mehr aktiv ist */
+								else if(!(hauptfenster.getThreadt_ammo().isAlive())){
+									hauptfenster.createThreadt_ammo();				
+								}
+							}
+							/*Wenn munition vorhanden ist */
+							if((hauptfenster.getDionaRapModel().getShootAmount()) > 0){
+								DRController.shoot();
+							}
+							break;
 						}
 						/* es wurde "links unten geklickt */
 						else if((playerposition_y - i == -1) && (playerposition_x - j == 1)){
