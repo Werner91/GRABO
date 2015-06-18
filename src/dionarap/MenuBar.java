@@ -150,6 +150,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		//Spieleinstellungen - MenuItem, Listener, deaktivieren, hinzufuegen
 		spieleinstellungen = new JMenuItem("Spieleinstellungen");
 		spieleinstellungen.addActionListener(this);
+		spieleinstellungen.setEnabled(false);
 		konfiguration.add(spieleinstellungen);
 		
 		
@@ -165,6 +166,25 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		this.add(konfiguration);
 		this.add(hilfe);
 	}	
+	
+	/**
+     * Methode, deaktiviert das "Spieleinstellungens-Element" 
+     */
+    public void setGameSettingsDisabled() {
+        spieleinstellungen.setEnabled(false);
+    }
+	
+	
+	
+	
+	/**
+     * Methode, setzt das "Spieleinstellungens-Element" auf aktiv
+     */
+    public void setGameSettingsEnabled() {
+        spieleinstellungen.setEnabled(true);
+    }
+	
+	
 		
 	/**
 	 * Eventhandler fuer das Event <code>actionPerformed</code>,

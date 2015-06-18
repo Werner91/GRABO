@@ -12,6 +12,7 @@ import de.fhwgt.dionarap.controller.DionaRapController;
 import de.fhwgt.dionarap.model.objects.Player;
 import de.fhwgt.dionarap.model.data.Grid;
 import de.fhwgt.dionarap.model.data.MTConfiguration;
+//import de.fhwgt.dionarap.MenuBar;
 /**
 *
 * Hauptfenster von DionaRap. Beinhaltet die main() Mehtode
@@ -295,6 +296,16 @@ public class Hauptfenster extends JFrame {
 	public Toolbar getToolbar(){
 		return this.toolbar;
 	}
+	
+	
+	/**
+     * get-Methode, gibt die Menuebar zurueck
+     * @return MenueLeiste
+     */
+    public MenuBar getMenubar() {
+        return menubar;
+    }
+	
 	
 	
 	/**

@@ -17,7 +17,7 @@ public class ListenerModel implements DionaRapListener{
 	
 	private Hauptfenster hauptfenster;
 	private Spielfeld spielfeld;
-
+	private MenuBar menubar;
 	
 	//Speil gewonnen / Spiel verloren
 	private boolean game_running = true;
@@ -80,6 +80,9 @@ public class ListenerModel implements DionaRapListener{
 		hauptfenster.getToolbar().updateToolbar();
 		// Gewinner/Verlierer Icon setzen
 		spielfeld.gameStatusEnd(hauptfenster.getPlayer(), game_lost); 
+		
+		 // den "Spieleinstellungen"-Button auf aktiv setzen
+		hauptfenster.getMenubar().setGameSettingsEnabled();
 		
 		
 		/* zeige Gewonnen / Verloren Dialog an */ 
