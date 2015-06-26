@@ -24,7 +24,7 @@ import de.fhwgt.dionarap.model.objects.Obstacle;
  * das Interface <code>ActionListener</code>. 
  *   
  * @author Werner Steinbinder
- * @version Aufgabe 5
+ * @version Aufgabe 6
  */
 
 public class ListenerMaus extends MouseAdapter implements ActionListener{
@@ -112,6 +112,7 @@ public class ListenerMaus extends MouseAdapter implements ActionListener{
 	 */
 	
 	public void mouseClicked(MouseEvent e){
+		System.out.println("mauslistener angekommen");
 		int size_x = hauptfenster.getDionaRapModel().getGrid().getGridSizeX();
 		int size_y = hauptfenster.getDionaRapModel().getGrid().getGridSizeY();
 		/*Rechtsklick*/
@@ -121,6 +122,7 @@ public class ListenerMaus extends MouseAdapter implements ActionListener{
 		}
 		//Linksklick
 		else if(e.getButton() == 1) {	
+
 			/* groesse des Spielfelds */
 			size_x = hauptfenster.getDionaRapModel().getGrid().getGridSizeX();
 			size_y = hauptfenster.getDionaRapModel().getGrid().getGridSizeY();
@@ -135,7 +137,7 @@ public class ListenerMaus extends MouseAdapter implements ActionListener{
 			for(int i = 0; i < size_y; i++){
 				for(int j = 0; j < size_x; j++){
 				
-					if(e.getSource().equals(labelArray[i][j])){
+					if(e.getSource() == labelArray[i][j]){
 						
 						/*es wurde auf den Spieler geklickt - schiessen */
 						if( i == playerposition_y && j == playerposition_x){
@@ -200,6 +202,7 @@ public class ListenerMaus extends MouseAdapter implements ActionListener{
 							
 							System.out.println("es wurde an eine Falsche stelle geklickt");
 						}
+						break;
 					}
 				}
 			}		

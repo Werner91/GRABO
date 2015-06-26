@@ -81,8 +81,9 @@ public class ListenerModel implements DionaRapListener{
 		// Gewinner/Verlierer Icon setzen
 		spielfeld.gameStatusEnd(hauptfenster.getPlayer(), game_lost); 
 		
-		 // den "Spieleinstellungen"-Button auf aktiv setzen
+		 // den "Spieleinstellungen" und "LevelReader"-Button auf aktiv setzen
 		hauptfenster.getMenubar().setGameSettingsEnabled();
+		hauptfenster.getMenubar().setLevelReaderEnabled();
 		
 		
 		/* zeige Gewonnen / Verloren Dialog an */ 

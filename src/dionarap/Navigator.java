@@ -50,7 +50,7 @@ public class Navigator extends JWindow {
 		setNavLocation();
 		//sichtbar machen
 		this.setVisible(true);
-		
+		this.setFocusableWindowState(false);
 	}
 	
 	
@@ -85,6 +85,7 @@ public class Navigator extends JWindow {
 	 */
 	public void showNavigator(){
 		this.setVisible(true);
+		this.setFocusableWindowState(false);
 	}
 
 

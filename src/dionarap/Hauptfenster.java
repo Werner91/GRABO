@@ -187,11 +187,12 @@ public class Hauptfenster extends JFrame {
 		
 		/* Werte gedrueckten Dialogbutton aus */
 		if(playerchoice == 0){
-			startNewGame();
+			
 			
 			//Buttons in der Toolbar deaktivieren
 			getToolbar().setButtonNSDisabled();
 			getToolbar().setButtonSettingsDisabled();
+			startNewGame();
 		}		
 	 }
 	
@@ -206,6 +207,10 @@ public class Hauptfenster extends JFrame {
 		init_dionarap();	
 		/* Button neues Spiel deaktivieren, packen + Navigator positionieren */
 		this.getToolbar().setButtonNSDisabled();
+		
+		//this.getToolbar().setButtonSettingsDisabled();
+		this.getMenubar().setGameSettingsDisabled();
+		this.getMenubar().setLevelReaderDisabled();
 		this.pack();
 		this.navigator.setNavLocation(); // Navigator neu Positionieren
 		this.requestFocus();

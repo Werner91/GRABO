@@ -218,15 +218,18 @@ public class Spieleinstellungen extends JDialog implements ActionListener{
 			JOptionPane.showMessageDialog(Spieleinstellungen.this, "Neues Spiel mit diesen Einstellungen wird gestartet ");
 			Spieleinstellungen.this.dispose();
 			hauptfenster.getMenubar().setGameSettingsDisabled();
+			hauptfenster.getMenubar().setLevelReaderDisabled();
 			hauptfenster.startNewGame();
 		}
 		
 		/* Checkbox "Zufaellige Wartezeit der Gegner */
 		if(e.getSource() == ch_box1_zufaelligeWartezeit){
 			if(ch_box1_zufaelligeWartezeit.isSelected()){
-				text[1].setEnabled(false);
+				wartezeit_slider.setEnabled(false);
+				wartezeit_vor_dem_schuss.setEnabled(false);
 			}else{
-				text[1].setEnabled(true);
+				wartezeit_slider.setEnabled(true);
+				wartezeit_vor_dem_schuss.setEnabled(true);
 			}
 		}	
 	}

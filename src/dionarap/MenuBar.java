@@ -33,7 +33,7 @@ import de.fhwgt.dionarap.model.data.MTConfiguration;
  * Klasse realisiert das Menu, abgeleitet von <code>JMenuBar</code>, implementiert <code>ActionListener</code>
  * 
  * @author Werner Steinbinder
- * @version Aufgabe 5
+ * @version Aufgabe 6
  */
 
 
@@ -74,7 +74,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	private JMenuItem spieleinstellungen;
 	
 
-	//Hilfe Elemeten
+	//Hilfe Elemete
 	private JMenuItem spielbeschreibung;
 	
 	
@@ -95,9 +95,9 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		
 		//Toolbar anzeigen
 		toolbaranzeigen = new JCheckBoxMenuItem("Toolbar anzeigen"); //Auswahl möglichkeit "Toolbar anzeigen"
-		toolbaranzeigen.setState(true);
+		toolbaranzeigen.setState(true); //Hacken ist gesetzt
 		toolbaranzeigen.addActionListener(this);
-		ansicht.add(toolbaranzeigen); //Toolbar anzeigen zum Reiter Ansicht hinzufügen
+		ansicht.add(toolbaranzeigen); //"Toolbar anzeigen" zum Reiter "Ansicht" hinzufügen
 	
 		//Toolbarposition
 		toolbarposition = new JMenu("Toolbar Position");
@@ -145,6 +145,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		/* Menu Konfiguration*/
 		leveleinlesen = new JMenuItem ("Level Einlesen");
 		leveleinlesen.addActionListener(this);
+		leveleinlesen.setEnabled(false);
 		konfiguration.add(leveleinlesen);
 		konfiguration.add(new JSeparator());
 		//Spieleinstellungen - MenuItem, Listener, deaktivieren, hinzufuegen
@@ -184,6 +185,20 @@ public class MenuBar extends JMenuBar implements ActionListener{
         spieleinstellungen.setEnabled(true);
     }
 	
+    
+    /**
+     * Methode, setzt das "Level einlesen" deaktivieren
+     */
+    public void setLevelReaderDisabled(){
+    	leveleinlesen.setEnabled(false);
+    }
+    
+    /**
+     * Methode, setzt das "Level einlesen" auf aktiv
+     */
+    public void setLevelReaderEnabled(){
+    	leveleinlesen.setEnabled(true);
+    }
 	
 		
 	/**
@@ -283,18 +298,22 @@ public class MenuBar extends JMenuBar implements ActionListener{
 			int returnvalue = filechooser.showOpenDialog(hauptfenster);
 			if(returnvalue == JFileChooser.APPROVE_OPTION){
 				/* lösche die Labels + icons vom Spielfeld */
-				//hauptfenster.getSpielfeld().clearSpielfeld();
 				hauptfenster.getSpielfeld().removeSpielfeldLabels();
+				
 				/* starte Levelreader (erwartet Instanz des DionaRap Models + MTConfiguration) und uebergebe ausgewählte Datei */
 				LevelReader levelreader = new LevelReader(hauptfenster.getMTConfiguration(), hauptfenster.getDionaRapModel());
 				levelreader.readLevel(filechooser.getSelectedFile().toString());
+				
 				/* neues Spielfeld + zeichne Icons */
 				hauptfenster.getSpielfeld().createSchachbrett();
 				hauptfenster.getSpielfeld().repaintPawns();
+				
 				/* setze neue Multithreading Konfiguration */
 				hauptfenster.getDionaRapController().setMultiThreaded(hauptfenster.getDionaRapModel().getActiveConfiguration());
+				
 				/*Toolbar aktualisieren */
 				hauptfenster.getToolbar().updateToolbar();
+				
 				/* Hauptfenster packen + Navigator neu positionieren (Spielfeldgroesse hat sich evtl. geändert)*/
 				hauptfenster.pack();
 				hauptfenster.getNavigator().setNavLocation();
@@ -309,6 +328,9 @@ public class MenuBar extends JMenuBar implements ActionListener{
 					hauptfenster.getDionaRapModel().getObstacles().size()
 				);
 				
+				hauptfenster.getToolbar().setButtonNSDisabled();
+				hauptfenster.getMenubar().setGameSettingsDisabled();
+				hauptfenster.getMenubar().setLevelReaderDisabled();
 				hauptfenster.setFlagGameSettingsChanged();
 			}
 		}

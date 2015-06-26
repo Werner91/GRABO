@@ -43,18 +43,13 @@ class ThreadAmmo extends Thread{
 				/* abwechselnd Rand hinzufuegeb / entfernen */
 				if((i % 2) == 0){
 				
-					//hauptfenster.getToolbar().getMuniJPanel().setBorder(BorderFactory.createTitledBorder("Munition"));
+					
 					hauptfenster.getToolbar().getMuniJPanel().setBorder(BorderFactory.createTitledBorder(null, "Munition", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.TOP, null, Color.RED));
-					//hauptfenster.getToolbar().getMuniJPanel().setBorder(new LineBorder(Color.red, 1));
-					//hauptfenster.getToolbar().getMuniJPanel().setBorder(BorderFactory.createLineBorder(Color.RED));
-					//hauptfenster.getToolbar().getMuniJPanel().setBorder(BorderFactory.createTitledBorder("Munition"));
+				
 				}else{
-					//hauptfenster.getToolbar().getMuniJPanel().setBorder(BorderFactory.createTitledBorder("Munition"));
+					
 					hauptfenster.getToolbar().getMuniJPanel().setBorder(BorderFactory.createTitledBorder(null, "Munition", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.TOP, null, Color.BLACK));
-					//hauptfenster.getToolbar().getMuniJPanel().setBorder(new LineBorder(Color.black, 1));
-					//hauptfenster.getToolbar().getMuniJPanel().setBorder(BorderFactory.createLineBorder(Color.BLACK));
-					//hauptfenster.getToolbar().getMuniJPanel().setBackground(Color.WHITE);
-					//hauptfenster.getToolbar().getMuniJPanel().setBorder(BorderFactory.createTitledBorder("Munition"));
+					
 				}
 				hauptfenster.getToolbar().getMuniJPanel().updateUI();
 			}
